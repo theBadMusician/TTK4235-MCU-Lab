@@ -3,7 +3,7 @@
 
 \section{Appendiks - Grunnleggende databladkunnskaper}\label{app:datablad}
 
-For enhver mikrokontroller er det viktig å kunne mestre bruken av datablade. Mer spesifikt, er det veldig viktig for å forstå hvordan man bruker det som kalles memory mapped IO. I praksis, betyr memory mapped IO at man \verb|typecaster| adressen til en modul inn i en \verb|struct|. Grunnen til at man bruker memory mapped IO, er at det gjør det mulig å skrive direkte til registrene i mikrokontrolleren ved å bare endre på \verb|struct|-ens medlemsvariabler. Se forøvrig pensumlitteratur og forelesninger for mer informasjon om memory mapped IO og hvordan en forholder seg til det i \verb|C|-programmering.
+For enhver mikrokontroller er det viktig å kunne mestre bruken av datablad. Mer spesifikt, er det veldig viktig for å forstå hvordan man bruker det som kalles memory mapped IO. I praksis, betyr memory mapped IO at man \verb|typecaster| adressen til en modul inn i en \verb|struct|. Grunnen til at man bruker memory mapped IO, er at det gjør det mulig å skrive direkte til registrene i mikrokontrolleren ved å bare endre på \verb|struct|-ens medlemsvariabler. Se forøvrig pensumlitteratur og forelesninger for mer informasjon om memory mapped IO og hvordan en forholder seg til det i \verb|C|-programmering.
 
 \subsection{Memory Mapped IO informasjon fra datablad}
 Det første man trenger for å kunne typecaste adressen til en modul inn i en \verb|struct|, er å finne adressen til modulen. I \verb|GPIO|-tilfellet, er baseadressen \verb|0x50000000| (se figur \ref{fig:app-gpio-modul}).
