@@ -26,11 +26,12 @@ int main(){
 
 	volatile int sleep = 0;
 
-  bool btn1_state = false;
-  bool btn2_state = false;
-  bool prev_btn1_state = false;
-  bool prev_btn2_state = false;
+  bool btn1_state       = false;
+  bool btn2_state       = false;
+  bool prev_btn1_state  = false;
+  bool prev_btn2_state  = false;
 
+  bool recv_led_state   = false;
 	while(1){
     btn1_state = (GPIO->IN & (1 << BUTTON_1_PIN)) == 0; // Active low
     btn2_state = (GPIO->IN & (1 << BUTTON_2_PIN)) == 0; // Active low
@@ -53,12 +54,9 @@ int main(){
 
     char recvd = uart_read();
     if (recvd != '\0') {
-      GPIO->OUTCLR = (3 << 19);
-
-      sleep = 10000;
-		  while(--sleep); // Delay
-
-      GPIO->OUTSET = (0b11 << 19);
+      if (recv_led_state) GPIO->OUTCLR = (0b11 << 19);
+      else                GPIO->OUTSET = (0b11 << 19);
+      recv_led_state = !recv_led_state;
     }
 
 
