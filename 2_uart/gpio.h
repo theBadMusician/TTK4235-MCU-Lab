@@ -20,6 +20,8 @@ typedef struct {
 
 #define BUTTON_1_PIN 13
 #define BUTTON_2_PIN 14
+#define BUTTON_3_PIN 15
+#define BUTTON_4_PIN 16
 
 #define LED_MATRIX_START_PIN 17
 #define LED_MATRIX_END_PIN 20

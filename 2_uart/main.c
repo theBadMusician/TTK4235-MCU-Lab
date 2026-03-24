@@ -1,12 +1,26 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include <stdio.h>
+#include <sys/types.h> // ssize_t
+
 #include "gpio.h"
 #include "uart.h"
 
+ssize_t _write(int fd, const void *buf, size_t count) {
+  char * letter = (char *)(buf);
+  for(int i = 0; i < count; i++){
+    uart_send(*letter);
+    letter++;
+  }
+  return count;
+}
+
 void button_init(){ 
-	GPIO->PIN_CNF[BUTTON_1_PIN] = (3 << 2); // Configure button 1 as input with pull-up resistor
-  GPIO->PIN_CNF[BUTTON_2_PIN] = (3 << 2); // Configure button 2 as input with pull-up resistor
+  /* Configure buttons as inputs with pull-up resistors */
+	GPIO->PIN_CNF[BUTTON_1_PIN] = (3 << 2);
+  GPIO->PIN_CNF[BUTTON_2_PIN] = (3 << 2); 
+  GPIO->PIN_CNF[BUTTON_3_PIN] = (3 << 2); 
 }
 
 int main(){
@@ -28,13 +42,16 @@ int main(){
 
   bool btn1_state       = false;
   bool btn2_state       = false;
+  bool btn3_state       = false;
   bool prev_btn1_state  = false;
   bool prev_btn2_state  = false;
+  bool prev_btn3_state  = false;
 
   bool recv_led_state   = false;
 	while(1){
     btn1_state = (GPIO->IN & (1 << BUTTON_1_PIN)) == 0; // Active low
     btn2_state = (GPIO->IN & (1 << BUTTON_2_PIN)) == 0; // Active low
+    btn3_state = (GPIO->IN & (1 << BUTTON_3_PIN)) == 0; // Active low
 
     if(btn1_state && !prev_btn1_state) { // Button 1 pressed
       uart_send('A');
@@ -45,6 +62,11 @@ int main(){
       uart_send('B');
     }
     prev_btn2_state = btn2_state; 
+
+    if(btn3_state && !prev_btn3_state) { // Button 2 pressed
+      iprintf("The average grade in TTK%d was in %d was: %c\n\r", 4235, 2022, 'B');
+    }
+    prev_btn3_state = btn3_state; 
 
     if (btn1_state) {GPIO->OUTCLR = (1 << 17);} // Turn on LED
     else            {GPIO->OUTSET = (1 << 17);} // Turn off LED
