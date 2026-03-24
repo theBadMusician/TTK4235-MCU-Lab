@@ -18,9 +18,10 @@ ssize_t _write(int fd, const void *buf, size_t count) {
 
 void button_init(){ 
   /* Configure buttons as inputs with pull-up resistors */
-	GPIO->PIN_CNF[BUTTON_1_PIN] = (3 << 2);
-  GPIO->PIN_CNF[BUTTON_2_PIN] = (3 << 2); 
-  GPIO->PIN_CNF[BUTTON_3_PIN] = (3 << 2); 
+  for (uint8_t i_btn = 0; i_btn < 4; i_btn++) {
+    GPIO->PIN_CNF[BUTTON_1_PIN + i_btn] = (3 << 2);
+  }
+
 }
 
 int main(){
@@ -40,39 +41,35 @@ int main(){
 
 	volatile int sleep = 0;
 
-  bool btn1_state       = false;
-  bool btn2_state       = false;
-  bool btn3_state       = false;
-  bool prev_btn1_state  = false;
-  bool prev_btn2_state  = false;
-  bool prev_btn3_state  = false;
-
+  bool btn_states[4]      = { false };
+  bool prev_btn_states[4] = { false };
   bool recv_led_state   = false;
-	while(1){
-    btn1_state = (GPIO->IN & (1 << BUTTON_1_PIN)) == 0; // Active low
-    btn2_state = (GPIO->IN & (1 << BUTTON_2_PIN)) == 0; // Active low
-    btn3_state = (GPIO->IN & (1 << BUTTON_3_PIN)) == 0; // Active low
 
-    if(btn1_state && !prev_btn1_state) { // Button 1 pressed
+	while(1){
+    for (uint8_t i_btn = 0; i_btn < 4; i_btn++) {
+      btn_states[i_btn] = (GPIO->IN & (1 << (BUTTON_1_PIN + i_btn))) == 0; // Active low
+    }
+
+    if(btn_states[0] && !prev_btn_states[0]) { // Button 1 pressed
       uart_send('A');
     }
-    prev_btn1_state = btn1_state;
+    prev_btn_states[0] = btn_states[0];
 
-    if(btn2_state && !prev_btn2_state) { // Button 2 pressed
+    if(btn_states[1] && !prev_btn_states[1]) { // Button 2 pressed
       uart_send('B');
     }
-    prev_btn2_state = btn2_state; 
+    prev_btn_states[1] = btn_states[1];
 
-    if(btn3_state && !prev_btn3_state) { // Button 2 pressed
+    if(btn_states[2] && !prev_btn_states[2]) { // Button 3 pressed
       iprintf("The average grade in TTK%d was in %d was: %c\n\r", 4235, 2022, 'B');
     }
-    prev_btn3_state = btn3_state; 
+    prev_btn_states[2] = btn_states[2];
 
-    if (btn1_state) {GPIO->OUTCLR = (1 << 17);} // Turn on LED
-    else            {GPIO->OUTSET = (1 << 17);} // Turn off LED
+    if (btn_states[0])  {GPIO->OUTCLR = (1 << 17);} // Turn on LED
+    else                {GPIO->OUTSET = (1 << 17);} // Turn off LED
 
-    if (btn2_state) {GPIO->OUTCLR = (0b01 << 18);}
-    else            {GPIO->OUTSET = (0b01 << 18);}
+    if (btn_states[1])  {GPIO->OUTCLR = (0b01 << 18);}
+    else                {GPIO->OUTSET = (0b01 << 18);}
 
     char recvd = uart_read();
     if (recvd != '\0') {
@@ -80,8 +77,6 @@ int main(){
       else                GPIO->OUTSET = (0b11 << 19);
       recv_led_state = !recv_led_state;
     }
-
-
 
 		sleep = 10000;
 		while(--sleep); // Delay
