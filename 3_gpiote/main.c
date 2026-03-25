@@ -56,53 +56,6 @@ int main(){
 
 	volatile int sleep = 0;
 	while(1){
-    // for (uint8_t i_btn = 0; i_btn < 4; i_btn++) {
-    //   btn_states[i_btn] = (GPIO->IN & (1 << (BUTTON_1_PIN + i_btn))) == 0; // Active low
-    // }
-    // 
-    // if (!recv_led_state) {
-    //   if (btn_states[0])  {GPIO->OUTCLR = (1 << 17);} // Turn on LED
-    //   else                {GPIO->OUTSET = (1 << 17);} // Turn off LED
-    //
-    //   if (btn_states[1])  {GPIO->OUTCLR = (0b01 << 18);}
-    //   else                {GPIO->OUTSET = (0b01 << 18);}
-    //
-    //   if (btn_states[2])  {GPIO->OUTCLR = (0b01 << 19);}
-    //   else                {GPIO->OUTSET = (0b01 << 19);}
-    //
-    //   if (btn_states[3])  {GPIO->OUTCLR = (0b01 << 20);}
-    //   else                {GPIO->OUTSET = (0b01 << 20);}
-    // }
-    // 
-    // else {
-    //   if (btn_states[0])  {GPIO->OUTSET = (1 << 17);} // Turn on LED
-    //   else                {GPIO->OUTCLR = (1 << 17);} // Turn off LED
-    //
-    //   if (btn_states[1])  {GPIO->OUTSET = (0b01 << 18);}
-    //   else                {GPIO->OUTCLR = (0b01 << 18);}
-    //
-    //   if (btn_states[2])  {GPIO->OUTSET = (0b01 << 19);}
-    //   else                {GPIO->OUTCLR = (0b01 << 19);}
-    //
-    //   if (btn_states[3])  {GPIO->OUTSET = (0b01 << 20);}
-    //   else                {GPIO->OUTCLR = (0b01 << 20);}
-    // }
-    //
-    // if(btn_states[0] && !prev_btn_states[0]) { // Button 1 pressed
-    // }
-    // prev_btn_states[0] = btn_states[0];
-    //
-    // if(btn_states[1] && !prev_btn_states[1]) { // Button 2 pressed
-    // }
-    // prev_btn_states[1] = btn_states[1];
-    //
-    // if(btn_states[2] && !prev_btn_states[2]) { // Button 3 pressed
-    // }
-    // prev_btn_states[2] = btn_states[2];
-    //
-    // if(btn_states[3] && !prev_btn_states[3]) { // Button 4 pressed
-    // }
-    // prev_btn_states[3] = btn_states[3];
 
 		sleep = 10000;
 		while(--sleep); // Delay
